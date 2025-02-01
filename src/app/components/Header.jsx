@@ -4,34 +4,41 @@ import { FaSearch } from "react-icons/fa";
 
 export default function Header() {
   return (
-    <header className="bg-gray-900 text-white p-4">
-      <div className="container mx-auto flex justify-between items-center">
+    <header className="bg-slate-200 shadow-md">
+      <div className="flex justify-between items-center max-w-6xl mx-auto p-3">
         <Link href="/">
-          <h1 className="text-2xl font-bold cursor-pointer">
+          <h1 className="font-bold text-sm sm:text-xl flex flex-wrap">
             <span className="text-slate-500">Real</span>
             <span className="text-slate-700">Estate</span>
           </h1>
         </Link>
-        <form className="flex items-center">
+        <form className="bg-slate-100 p-3 rounded-lg flex items-center">
           <input
             type="text"
-            placeholder="Search"
-            className="bg-transparent focus:outline-none w-24 sm:w-64 "
+            placeholder="Search..."
+            className="bg-transparent focus:outline-none w-24 sm:w-64"
           />
-          <button className=" text-white  rounded-lg ml-5">
-            <FaSearch className="text-slate-600  " />
+          <button>
+            <FaSearch className="text-slate-600" />
           </button>
         </form>
-        <ul>
-          <li className="inline-block mx-2">
-            <Link href="/">Home</Link>
-          </li>
-          <li className="inline-block mx-2">
-            <Link href="/about">About</Link>
-          </li>
-          <li className="inline-block mx-2">
-            <Link href="/contact">Contact</Link>
-          </li>
+        <ul className="flex gap-4">
+          <Link href="/">
+            <li className="hidden md:inline text-slate-700 hover:underline">
+              Home
+            </li>
+          </Link>
+          <Link href="/about">
+            <li className="hidden md:inline text-slate-700 hover:underline">
+              About
+            </li>
+          </Link>
+
+          <Link href="/">
+            <li className="hidden md:inline text-slate-700 hover:underline">
+              Sign In
+            </li>
+          </Link>
         </ul>
       </div>
     </header>
