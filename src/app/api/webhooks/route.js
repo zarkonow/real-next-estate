@@ -1,7 +1,7 @@
 import { Webhook } from "svix";
 import { headers } from "next/headers";
-import { clerkClient } from "@clerk/nextjs/dist/types/server";
 import { createOrUpdateUser, deleteUser } from "@/lib/actions/user";
+import { clerkClient } from "@clerk/nextjs/server";
 
 export async function POST(req) {
   const SIGNING_SECRET = process.env.SIGNING_SECRET;
@@ -65,33 +65,33 @@ export async function POST(req) {
       );
       if (user && eventType === "user.created") {
         try {
-          await clerkClient.user.updateUserMetadata(id, {
-            publicMetadata: { userMongoId: user._id },
+          await clerkClient.users.updateUserMetadata(id, {
+            publicMetadata: {
+              userMogoId: user._id,
+            },
           });
         } catch (error) {
-          console.log("Error Updating User Metadata", error);
+          console.log("Error: Could not update user metadata:", error);
         }
       }
     } catch (error) {
-      console.log("Error Update or Create User", error);
-    }
-
-    console.log(`Could not create or update User`,error);
-  }
-
-  if (eventType === "user.deleted") {
-    try {
-      await deleteUser(id);
-      console.log(`User with ID: ${id} has been deleted`);
-    } catch (error) {
-      console.log("Error Deleting User", error);
-      return new Response("Error: Could not delete user", {
+      console.log("Error: Could not create or update user:", error);
+      return new Response("Error: Could not create or update user", {
         status: 400,
       });
     }
   }
 
-  
+  if (eventType === "user.deleted") {
+    try {
+      await deleteUser(id);
+    } catch (error) {
+      console.log("Error: Could not delete user:", error);
+      return new Response("Error: Could not delete user", {
+        status: 400,
+      });
+    }
+  }
 
   return new Response("Webhook received", { status: 200 });
 }
